@@ -6,7 +6,7 @@ define :db_app, :template => 'database.yml.erb', :local => false, :enable => tru
     source params[:template]
     local params[:local]
     owner node['capistrano']['deploy_user']
-    group node['capistrano']['deploy_user']
+    group node['capistrano']['group']
     mode '0644'
     cookbook params[:cookbook] if params[:cookbook]
     variables(
