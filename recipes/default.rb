@@ -32,12 +32,12 @@ include_recipe 'mysql::server'
 include_recipe "database::mysql"
 
 # create database
-connection_info = {
-  :host     => node['capistrano']['db_host'],
-  :username => node['capistrano']['db_user'],
-  :password => node['capistrano']['db_password']
-}
-mysql_database "#{node['capistrano']['application']}_#{node['capistrano']['rails_env']}" do
-  connection_info
-  action :create
-end
+# connection_info = {
+#   :host     => node['capistrano']['db_host'],
+#   :username => node['capistrano']['db_user'],
+#   :password => node['capistrano']['db_password']
+# }
+# mysql_database "#{node['capistrano']['application']}_#{node['capistrano']['rails_env']}" do
+#   connection_info
+#   action :create
+# end
