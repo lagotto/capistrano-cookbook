@@ -16,6 +16,7 @@ db_app node['capistrano']['application'] do
   host node['capistrano']['db_host']
   username node['capistrano']['db_user']
   password node['capistrano']['db_password']
+  cookbook "capistrano"
 end
 
 # create the database
