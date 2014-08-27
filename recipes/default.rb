@@ -1,3 +1,6 @@
+# make sure we have a current Ruby
+include_recipe 'ruby'
+
 # create folders needed for config files and web server document root
 %w{ current/public shared/config shared/db/seeds shared/public/files }.each do |dir|
   directory "/var/www/#{node['capistrano']['application']}/#{dir}" do
