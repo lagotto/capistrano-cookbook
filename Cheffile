@@ -9,5 +9,5 @@ cookbook "ruby",
   :git => "git@github.com:articlemetrics/ruby-cookbook.git"
 cookbook "passenger_nginx",
   :git => "git@github.com:articlemetrics/passenger_nginx-cookbook.git"
-cookbook "mysql", '~> 5.4.3'
-cookbook 'database', '~> 2.3.0'
+cookbook "mysql"
+cookbook 'database'
