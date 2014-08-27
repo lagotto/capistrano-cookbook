@@ -3,7 +3,7 @@ include_recipe 'apt'
 include_recipe 'ruby'
 
 # create folders needed for config files and web server document root
-%w{ current/public shared/config shared/db/seeds shared/public/files }.each do |dir|
+%w{ current/public shared/config }.each do |dir|
   directory "/var/www/#{node['capistrano']['application']}/#{dir}" do
     owner node['capistrano']['deploy_user']
     group node['capistrano']['group']
@@ -32,12 +32,12 @@ include_recipe 'mysql::server'
 include_recipe "database::mysql"
 
 # create database
-# connection_info = {
-#   :host     => node['capistrano']['db_host'],
-#   :username => node['capistrano']['db_user'],
-#   :password => node['capistrano']['db_password']
-# }
-# mysql_database "#{node['capistrano']['application']}_#{node['capistrano']['rails_env']}" do
-#   connection_info
-#   action :create
-# end
+connection_info = {
+  :host     => node['capistrano']['db_host'],
+  :username => node['capistrano']['db_user'],
+  :password => node['capistrano']['db_password']
+}
+mysql_database "#{node['capistrano']['application']}_#{node['capistrano']['rails_env']}" do
+  connection_info
+  action :create
+end
