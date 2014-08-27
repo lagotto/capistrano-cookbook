@@ -1,8 +1,9 @@
 define :db_app, :template => 'database.yml.erb', :local => false, :enable => true do
 
   application_name = params[:name]
+  filename = "/var/www/#{node['capistrano']['application']}/shared/config/database.yml"
 
-  template "/var/www/#{node['capistrano']['application']}/shared/config/database.yml" do
+  template filename do
     source params[:template]
     local params[:local]
     owner node['capistrano']['deploy_user']
@@ -16,7 +17,10 @@ define :db_app, :template => 'database.yml.erb', :local => false, :enable => tru
     action :create_if_missing
   end
 
-  # read password for downstream use - this way we can use random passwords without a Chef server
-  database = YAML::load(IO.read("/var/www/#{node['capistrano']['application']}/shared/config/database.yml"))
-  node.set_unless['capistrano']['db_password'] = database['defaults']['password']
+  # if database.yml exists, read password for downstream use
+  # this way we can use random passwords without a Chef server
+  if File.exists? filename
+    database = YAML::load(IO.read(filename))
+    node.set_unless['capistrano']['db_password'] = database['defaults']['password']
+  end
 end

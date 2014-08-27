@@ -30,9 +30,9 @@ SITE
 GIT
   remote: git@github.com:articlemetrics/passenger_nginx-cookbook.git
   ref: master
-  sha: 13390ce0817accc13775e70ea07a70aa89c88601
+  sha: c6aaf9b65db0dc0924c9ee9058f7a87e9597a86b
   specs:
-    passenger_nginx (0.1.4)
+    passenger_nginx (0.1.7)
       apt (~> 2.5.3)
       build-essential (= 2.0.0)
       ruby (~> 0.1.0)
@@ -49,7 +49,7 @@ GIT
 PATH
   remote: ../capistrano-cookbook
   specs:
-    capistrano (0.1.4)
+    capistrano (0.1.6)
       database (~> 2.3.0)
       mysql (~> 5.4.3)
       passenger_nginx (~> 0.1.0)

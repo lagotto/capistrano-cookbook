@@ -24,17 +24,16 @@ db_app node['capistrano']['application'] do
   cookbook "capistrano"
 end
 
-#include_recipe 'mysql::server'
-#include_recipe 'mysql::client'
+include_recipe 'mysql::server'
 include_recipe "database::mysql"
 
-# create the database
-connection_info = {
-  :host     => node['capistrano']['db_host'],
-  :username => node['capistrano']['db_user'],
-  :password => node['capistrano']['db_password']
-}
-mysql_database "#{node['capistrano']['application']}_#{node['capistrano']['rails_env']}" do
-  connection_info
-  action :create
-end
+# create database
+# connection_info = {
+#   :host     => node['capistrano']['db_host'],
+#   :username => node['capistrano']['db_user'],
+#   :password => node['capistrano']['db_password']
+# }
+# mysql_database "#{node['capistrano']['application']}_#{node['capistrano']['rails_env']}" do
+#   connection_info
+#   action :create
+# end
