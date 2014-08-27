@@ -5,6 +5,7 @@ include_recipe 'mysql::client'
 %w{ current shared/config }.each do |dir|
   directory "/var/www/#{node['capistrano']['application']}/#{dir}" do
     owner node['capistrano']['deploy_user']
+    group node['capistrano']['group']
     mode 0755
     recursive true
   end
