@@ -1,0 +1,60 @@
+SITE
+  remote: https://supermarket.getchef.com/api/v1
+  specs:
+    apt (2.5.3)
+    aws (2.4.0)
+    build-essential (2.0.0)
+    chef-sugar (2.2.0)
+    database (2.3.0)
+      aws (>= 0.0.0)
+      mysql (>= 5.0.0)
+      mysql-chef_gem (>= 0.0.0)
+      postgresql (>= 1.0.0)
+      xfs (>= 0.0.0)
+    mysql (5.4.3)
+      yum-mysql-community (>= 0.0.0)
+    mysql-chef_gem (0.0.2)
+      build-essential (>= 0.0.0)
+      mysql (>= 0.0.0)
+    openssl (2.0.0)
+      chef-sugar (>= 0.0.0)
+    postgresql (3.4.2)
+      apt (>= 1.9.0)
+      build-essential (>= 0.0.0)
+      openssl (>= 0.0.0)
+    xfs (1.1.0)
+    yum (3.2.4)
+    yum-mysql-community (0.1.10)
+      yum (>= 3.0)
+
+GIT
+  remote: git@github.com:articlemetrics/passenger_nginx-cookbook.git
+  ref: master
+  sha: da615e0d1568b25b14f6e60a3bbd0d0adfcfd55f
+  specs:
+    passenger_nginx (0.1.2)
+      apt (~> 2.5.3)
+      build-essential (= 2.0.0)
+      ruby (~> 0.1.0)
+
+GIT
+  remote: git@github.com:articlemetrics/ruby-cookbook.git
+  ref: master
+  sha: 7d8d707dd448e351776b0b1a4d6ffba40acb9bc4
+  specs:
+    ruby (0.1.1)
+      apt (~> 2.5.3)
+      build-essential (= 2.0.0)
+
+PATH
+  remote: ../capistrano-cookbook
+  specs:
+    capistrano (0.1.0)
+
+DEPENDENCIES
+  capistrano (>= 0)
+  database (~> 2.3.0)
+  mysql (~> 5.4.3)
+  passenger_nginx (>= 0)
+  ruby (>= 0)
+

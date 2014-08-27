@@ -1,0 +1,23 @@
+development:
+  adapter:   mysql2
+  database:  <%= @application_name %>_development
+  username:  <%= @params[:username] %>
+  password:  <%= @params[:password] %>
+  host:      <%= @params[:host] %>
+  pool: 10
+
+test:
+  adapter:   mysql2
+  database:  <%= @application_name %>_test
+  username:  <%= @params[:username] %>
+  password:  <%= @params[:password] %>
+  host:      <%= @params[:host] %>
+  pool: 10
+
+production:
+  adapter:   mysql2
+  database:  <%= @application_name %>_production
+  username:  <%= @params[:username] %>
+  password:  <%= @params[:password] %>
+  host:      <%= @params[:host] %>
+  pool: 10
