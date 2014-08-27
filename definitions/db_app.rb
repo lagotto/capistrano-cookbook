@@ -21,6 +21,6 @@ define :db_app, :template => 'database.yml.erb', :local => false, :enable => tru
   # this way we can use random passwords without a Chef server
   if File.exists? filename
     database = YAML::load(IO.read(filename))
-    node.set_unless['capistrano']['db_password'] = database['defaults']['password']
+    node.set_unless['capistrano']['db_password'] = database['production']['password']
   end
 end
