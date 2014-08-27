@@ -1,4 +1,5 @@
 # make sure we have a current Ruby
+include_recipe 'apt'
 include_recipe 'ruby'
 
 # create folders needed for config files and web server document root
