@@ -1,5 +1,5 @@
 # create folders needed for config files and web server document root
-%w{ current shared/config }.each do |dir|
+%w{ current/public shared/config shared/db/seeds shared/public/files }.each do |dir|
   directory "/var/www/#{node['capistrano']['application']}/#{dir}" do
     owner node['capistrano']['deploy_user']
     group node['capistrano']['group']
