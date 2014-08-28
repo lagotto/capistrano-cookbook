@@ -7,6 +7,7 @@ directory "/var/www/#{node['capistrano']['application']}" do
   owner node['capistrano']['deploy_user']
   group node['capistrano']['group']
   mode 0755
+  recursive true
 end
 
 # create symlinked shared folder for content that persists between deploys
