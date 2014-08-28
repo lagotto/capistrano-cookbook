@@ -3,6 +3,7 @@ include_recipe 'capistrano::default'
 
 # install required gems via bundler
 bash "bundle" do
+  user node['capistrano']['deploy_user']
   cwd "/var/www/#{node['capistrano']['application']}/current"
   if node['capistrano']['rails_env'] == "development"
     code "bundle install"
@@ -14,6 +15,7 @@ end
 # precompile assets
 if node['capistrano']['rails_env'] != "development"
   bash "bundle" do
+    user node['capistrano']['deploy_user']
     cwd "/var/www/#{node['capistrano']['application']}/current"
     code "RAILS_ENV=#{node['capistrano']['rails_env']} assets:precompile"
   end

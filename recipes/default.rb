@@ -23,12 +23,14 @@ end
 # symlink shared files and folders
 node['capistrano']['linked_files'].each do |file|
   bash "ln -fs /var/www/#{node['capistrano']['application']}/shared/#{file} #{file}" do
+    user node['capistrano']['deploy_user']
     cwd "/var/www/#{node['capistrano']['application']}/current"
   end
 end
 
 node['capistrano']['linked_dirs'].each do |dir|
   bash "ln -fs /var/www/#{node['capistrano']['application']}/shared/#{dir} #{dir}" do
+    user node['capistrano']['deploy_user']
     cwd "/var/www/#{node['capistrano']['application']}/current"
   end
 end
