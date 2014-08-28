@@ -31,10 +31,13 @@ node['capistrano']['linked_files'].each do |file|
 end
 
 node['capistrano']['linked_dirs'].each do |dir|
-  unless Dir.exist?("/var/www/#{node['capistrano']['application']}/shared/#{dir}")
-    bash "mkdir -p /var/www/#{node['capistrano']['application']}/shared/#{dir}" do
-      user node['capistrano']['deploy_user']
-    end
+  directory "/var/www/#{node['capistrano']['application']}/shared/#{dir}" do
+    owner node['capistrano']['deploy_user']
+    group node['capistrano']['group']
+    mode 0755
+    recursive true
+  end
+
   end
   bash "ln -fs /var/www/#{node['capistrano']['application']}/shared/#{dir} #{dir}" do
     user node['capistrano']['deploy_user']
