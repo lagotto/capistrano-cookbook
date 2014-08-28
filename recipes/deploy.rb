@@ -16,7 +16,7 @@ bash "bundle" do
   if node['capistrano']['rails_env'] == "development"
     code "/usr/local/bin/bundle install --path vendor/bundle"
   else
-    code "/usr/local/bin/bundle install --path vendor/bundle --deployment"
+    code "/usr/local/bin/bundle install --path vendor/bundle --deployment --without development test"
   end
 end
 

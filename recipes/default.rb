@@ -2,14 +2,6 @@
 include_recipe 'apt'
 include_recipe 'ruby'
 
-# configure nginx virtual host
-web_app node['capistrano']['application'] do
-  docroot "/var/www/#{node['capistrano']['application']}/current/public"
-  server_name node['hostname']
-  rails_env node['capistrano']['rails_env']
-  cookbook "passenger_nginx"
-end
-
 # create folders needed for config files, vendored gems, and web server document root
 %w{ current/public current/vendor/bundle shared/vendor_bundle shared/config }.each do |dir|
   directory "/var/www/#{node['capistrano']['application']}/#{dir}" do
@@ -47,4 +39,12 @@ node['capistrano']['linked_dirs'].each do |dir|
     user node['capistrano']['deploy_user']
     cwd "/var/www/#{node['capistrano']['application']}/current"
   end
+end
+
+# configure nginx virtual host
+web_app node['capistrano']['application'] do
+  docroot "/var/www/#{node['capistrano']['application']}/current/public"
+  server_name node['hostname']
+  rails_env node['capistrano']['rails_env']
+  cookbook "passenger_nginx"
 end
