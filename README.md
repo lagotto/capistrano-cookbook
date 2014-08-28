@@ -26,7 +26,15 @@ Other cookbooks:
 
 Attributes
 ----------
-* `node['ruby']['version']` - Can be `ruby1.9.1`, `ruby2.0` or `ruby2.1`, Defaults to `ruby2.1`. `ruby1.9.1` is Ruby 1.9.3.
+* `node['capistrano']['application']` - Defaults to `app`.
+* `node['capistrano']['rails_env']` - Defaults to `production`.
+* `node['capistrano']['deploy_user']` - Defaults to `vagrant`.
+* `node['capistrano']['group']` - Defaults to `www-data`.
+* `node['capistrano']['db_user']` - Defaults to `root`.
+* `node['capistrano']['db_password']` - Defaults to `node['mysql']['server_root_password']`.
+* `node['capistrano']['db_host']` - Defaults to `localhost`.
+* `node['capistrano']['linked_files']` - Defaults to `[]`.
+* `node['capistrano']['linked_dirs']` - Defaults to `[]`.
 
 
 Recipes
@@ -34,9 +42,17 @@ Recipes
 ### default
 Configures server for Capistrano deployment tool:
 
+* configure application for Nginx
 * set up `shared` folder
 * create `database.yml` file in `shared/config/database.yml`
-* configure document folder for Nginx
+* symlink shared folders and files
+
+### deploy
+Includes the `default` recipe, but also does the following:
+
+* bundle install all gems
+* precompile assets
+* create database (if it doesn't exist), and run migrations
 
 
 License & Authors

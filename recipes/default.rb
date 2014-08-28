@@ -2,6 +2,14 @@
 include_recipe 'apt'
 include_recipe 'ruby'
 
+# configure nginx virtual host
+web_app node['capistrano']['application'] do
+  docroot "/var/www/#{node['capistrano']['application']}/current/public"
+  server_name node['hostname']
+  rails_env node['capistrano']['rails_env']
+  cookbook "passenger_nginx"
+end
+
 # create folders needed for config files and web server document root
 %w{ current/public shared/config }.each do |dir|
   directory "/var/www/#{node['capistrano']['application']}/#{dir}" do
@@ -12,32 +20,15 @@ include_recipe 'ruby'
   end
 end
 
-# configure nginx virtual host
-web_app node['capistrano']['application'] do
-  docroot "/var/www/#{node['capistrano']['application']}/current/public"
-  server_name node['hostname']
-  rails_env node['capistrano']['rails_env']
-  cookbook "passenger_nginx"
+# symlink shared files and folders
+node['capistrano']['linked_files'].each do |file|
+  bash "ln -fs /var/www/#{node['capistrano']['application']}/shared/#{file} #{file}" do
+    cwd "/var/www/#{node['capistrano']['application']}/current"
+  end
 end
 
-# create database configuration file
-db_app node['capistrano']['application'] do
-  host node['capistrano']['db_host']
-  username node['capistrano']['db_user']
-  password node['capistrano']['db_password']
-  cookbook "capistrano"
+node['capistrano']['linked_dirs'].each do |dir|
+  bash "ln -fs /var/www/#{node['capistrano']['application']}/shared/#{dir} #{dir}" do
+    cwd "/var/www/#{node['capistrano']['application']}/current"
+  end
 end
-
-include_recipe 'mysql::server'
-include_recipe "database::mysql"
-
-# create database
-# connection_info = {
-#   :host     => node['capistrano']['db_host'],
-#   :username => node['capistrano']['db_user'],
-#   :password => node['capistrano']['db_password']
-# }
-# mysql_database "#{node['capistrano']['application']}_#{node['capistrano']['rails_env']}" do
-#   connection_info
-#   action :create
-# end

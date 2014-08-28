@@ -10,4 +10,3 @@ cookbook "ruby",
 cookbook "passenger_nginx",
   :git => "git@github.com:articlemetrics/passenger_nginx-cookbook.git"
 cookbook "mysql"
-cookbook 'database'
