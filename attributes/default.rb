@@ -1,5 +1,6 @@
 default['capistrano']['application'] = "app"
 default['capistrano']['rails_env'] = "production"
+default['capistrano']['rails_version'] = "4.1.15"
 default['capistrano']['deploy_user'] = "vagrant"
 default['capistrano']['group'] = "www-data"
 
