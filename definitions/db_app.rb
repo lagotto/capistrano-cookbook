@@ -29,8 +29,8 @@ define :db_app, :template => 'database.yml.erb', :local => false, :enable => tru
     end
 
     file "database.yml" do
-      path "/var/www/#{node['capistrano']['application']}/shared/config/database.yml"
-      content ::File.open("/var/www/#{node['capistrano']['application']}/current/config/database.yml").read
+      path "/var/www/#{node['capistrano']['application']}/current/config/database.yml"
+      content ::File.open("/var/www/#{node['capistrano']['application']}/shared/config/database.yml").read
       owner node['capistrano']['deploy_user']
       group node['capistrano']['group']
       mode 0644
