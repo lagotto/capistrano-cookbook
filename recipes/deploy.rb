@@ -9,19 +9,20 @@ cookbook_file "Gemfile" do
 end
 
 # install required gems via bundler
+# use full path as bundler might otherwise get confused by the chef ruby
 bash "bundle" do
   user node['capistrano']['deploy_user']
   cwd "/var/www/#{node['capistrano']['application']}/current"
   if node['capistrano']['rails_env'] == "development"
-    code "bundle install"
+    code "/usr/local/bin/bundle install"
   else
-    code "bundle install --deployment"
+    code "/usr/local/bin/bundle install --deployment"
   end
 end
 
 # precompile assets
 if node['capistrano']['rails_env'] != "development"
-  bash "RAILS_ENV=#{node['capistrano']['rails_env']} assets:precompile" do
+  bash "RAILS_ENV=#{node['capistrano']['rails_env']} /usr/local/bin/bundle exec assets:precompile" do
     user node['capistrano']['deploy_user']
     cwd "/var/www/#{node['capistrano']['application']}/current"
   end

@@ -6,7 +6,7 @@ define :db_app, :template => 'database.yml.erb', :local => false, :enable => tru
   if File.exists? filename
     # if database.yml exists, run migrations
 
-    bash "RAILS_ENV=#{node['capistrano']['rails_env']} rake db:migrations" do
+    bash "RAILS_ENV=#{node['capistrano']['rails_env']} /usr/local/bin/bundle exec rake db:migrations" do
       user node['capistrano']['deploy_user']
       cwd "/var/www/#{node['capistrano']['application']}/current"
     end
@@ -32,7 +32,7 @@ define :db_app, :template => 'database.yml.erb', :local => false, :enable => tru
       cwd "/var/www/#{node['capistrano']['application']}/current"
     end
 
-    bash "RAILS_ENV=#{node['capistrano']['rails_env']} rake db:setup" do
+    bash "RAILS_ENV=#{node['capistrano']['rails_env']} /usr/local/bin/bundle exec rake db:setup" do
       user node['capistrano']['deploy_user']
       cwd "/var/www/#{node['capistrano']['application']}/current"
     end
