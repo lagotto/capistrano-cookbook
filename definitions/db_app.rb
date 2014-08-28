@@ -25,7 +25,7 @@ define :db_app, :template => 'database.yml.erb', :local => false, :enable => tru
         :params           => params
       )
       action :create
-      notifies :run, "file[database.yml]", :immediately
+      notifies :create, "file[database.yml]", :immediately
     end
 
     file "database.yml" do
