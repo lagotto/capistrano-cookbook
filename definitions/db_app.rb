@@ -27,9 +27,8 @@ define :db_app, :template => 'database.yml.erb', :local => false, :enable => tru
       action :create
     end
 
-    bash "cp -p /var/www/#{node['capistrano']['application']}/shared/config/database.yml config/database.yml" do
+    bash "cp -p /var/www/#{node['capistrano']['application']}/shared/config/database.yml /var/www/#{node['capistrano']['application']}/current/config/database.yml" do
       user node['capistrano']['deploy_user']
-      cwd "/var/www/#{node['capistrano']['application']}/current"
     end
 
     bash "RAILS_ENV=#{node['capistrano']['rails_env']} /usr/local/bin/bundle exec rake db:setup" do
