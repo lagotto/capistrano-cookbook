@@ -3,6 +3,8 @@ include_recipe 'mysql::server'
 # provide Gemfile if it doesn't exist, e.g. during testing
 cookbook_file "Gemfile" do
   path "/var/www/#{node['capistrano']['application']}/current/Gemfile"
+  owner node['capistrano']['deploy_user']
+  group node['capistrano']['group']
   action :create_if_missing
 end
 
