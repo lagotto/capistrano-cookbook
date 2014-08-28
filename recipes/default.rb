@@ -22,9 +22,11 @@ end
 
 # symlink shared files and folders
 node['capistrano']['linked_files'].each do |file|
-  bash "ln -fs /var/www/#{node['capistrano']['application']}/shared/#{file} #{file}" do
-    user node['capistrano']['deploy_user']
-    cwd "/var/www/#{node['capistrano']['application']}/current"
+  unless ["config/database.yml", "config/settings.yml"].include?(file)
+    bash "ln -fs /var/www/#{node['capistrano']['application']}/shared/#{file} #{file}" do
+      user node['capistrano']['deploy_user']
+      cwd "/var/www/#{node['capistrano']['application']}/current"
+    end
   end
 end
 

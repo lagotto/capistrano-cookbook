@@ -1,5 +1,4 @@
 include_recipe 'mysql::server'
-include_recipe 'capistrano::default'
 
 # provide Gemfile if it doesn't exist, e.g. during testing
 cookbook_file "Gemfile" do

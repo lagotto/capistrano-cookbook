@@ -44,11 +44,10 @@ Configures server for Capistrano deployment tool:
 
 * configure application for Nginx
 * set up `shared` folder
-* create `database.yml` file in `shared/config/database.yml`
 * symlink shared folders and files
 
 ### deploy
-Includes the `default` recipe, but also does the following:
+Duplicates some of the capistrano functionality (e.g. for a development environment):
 
 * bundle install all gems
 * precompile assets
