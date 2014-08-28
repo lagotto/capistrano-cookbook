@@ -10,13 +10,18 @@ web_app node['capistrano']['application'] do
   cookbook "passenger_nginx"
 end
 
-# create folders needed for config files and web server document root
-%w{ current/public shared/config }.each do |dir|
+# create folders needed for config files, vendored gems, and web server document root
+%w{ current/public current/vendor/bundle shared/vendor_bundle shared/config }.each do |dir|
   directory "/var/www/#{node['capistrano']['application']}/#{dir}" do
     owner node['capistrano']['deploy_user']
     group node['capistrano']['group']
     mode 0755
     recursive true
+  end
+
+  bash "ln -fs /var/www/#{node['capistrano']['application']}/shared/vendor_bundle vendor/bundle" do
+    user node['capistrano']['deploy_user']
+    cwd "/var/www/#{node['capistrano']['application']}/current"
   end
 end
 

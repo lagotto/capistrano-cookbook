@@ -8,20 +8,15 @@ cookbook_file "Gemfile" do
   action :create_if_missing
 end
 
-# clear local gems cache
-bash "gem sources --clear-all" do
-  user node['capistrano']['deploy_user']
-end
-
 # install required gems via bundler
 # use full path as bundler might otherwise get confused by the chef ruby
 bash "bundle" do
   user node['capistrano']['deploy_user']
   cwd "/var/www/#{node['capistrano']['application']}/current"
   if node['capistrano']['rails_env'] == "development"
-    code "/usr/local/bin/bundle install"
+    code "/usr/local/bin/bundle install --path vendor/bundle"
   else
-    code "/usr/local/bin/bundle install --deployment"
+    code "/usr/local/bin/bundle install --path vendor/bundle --deployment"
   end
 end
 
