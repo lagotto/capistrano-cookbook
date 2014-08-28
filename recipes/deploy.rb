@@ -15,7 +15,7 @@ end
 if node['capistrano']['rails_env'] != "development"
   bash "bundle" do
     cwd "/var/www/#{node['capistrano']['application']}/current"
-    code "RAILS_ENV=#{['capistrano']['rails_env']} assets:precompile"
+    code "RAILS_ENV=#{node['capistrano']['rails_env']} assets:precompile"
   end
 end
 
