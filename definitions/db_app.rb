@@ -25,9 +25,11 @@ define :db_app, :template => 'database.yml.erb', :local => false, :enable => tru
         :params           => params
       )
       action :create
+      notifies :run, "file[database.yml]", :immediately
     end
 
-    file "/var/www/#{node['capistrano']['application']}/shared/config/database.yml" do
+    file "database.yml" do
+      path "/var/www/#{node['capistrano']['application']}/shared/config/database.yml"
       content ::File.open("/var/www/#{node['capistrano']['application']}/current/config/database.yml").read
       owner node['capistrano']['deploy_user']
       group node['capistrano']['group']
