@@ -2,8 +2,15 @@
 include_recipe 'apt'
 include_recipe 'ruby'
 
-# create application folder with symlinked shared folder for content that persists between deploys
-%w{ alm alm/current alm/shared }.each do |dir|
+# create application folder
+directory "/var/www/#{node['capistrano']['application']}" do
+  owner node['capistrano']['deploy_user']
+  group node['capistrano']['group']
+  mode 0755
+end
+
+# create symlinked shared folder for content that persists between deploys
+%w{ current shared }.each do |dir|
   directory "/var/www/#{node['capistrano']['application']}/#{dir}" do
     owner node['capistrano']['deploy_user']
     group node['capistrano']['group']
