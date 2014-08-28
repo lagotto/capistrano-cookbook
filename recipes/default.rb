@@ -11,7 +11,7 @@ directory "/var/www/#{node['capistrano']['application']}" do
 end
 
 # create symlinked shared folder for content that persists between deploys
-%w{ current shared }.each do |dir|
+%w{ current current/config shared shared/config }.each do |dir|
   directory "/var/www/#{node['capistrano']['application']}/#{dir}" do
     owner node['capistrano']['deploy_user']
     group node['capistrano']['group']
