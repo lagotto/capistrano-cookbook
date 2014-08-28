@@ -11,12 +11,11 @@ directory "/var/www/#{node['capistrano']['application']}" do
 end
 
 # create folders needed for config files, vendored gems, and web server document root
-%w{ current/public current/vendor/bundle shared/vendor_bundle shared/config }.each do |dir|
+%w{ current current/public current/vendor current/vendor/bundle shared shared/vendor_bundle shared/config }.each do |dir|
   directory "/var/www/#{node['capistrano']['application']}/#{dir}" do
     owner node['capistrano']['deploy_user']
     group node['capistrano']['group']
     mode 0755
-    recursive true
   end
 
   bash "ln -fs /var/www/#{node['capistrano']['application']}/shared/vendor_bundle vendor/bundle" do
@@ -40,7 +39,6 @@ node['capistrano']['linked_dirs'].each do |dir|
     owner node['capistrano']['deploy_user']
     group node['capistrano']['group']
     mode 0755
-    recursive true
   end
 
   bash "ln -fs /var/www/#{node['capistrano']['application']}/shared/#{dir} #{dir}" do
