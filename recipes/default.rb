@@ -38,7 +38,6 @@ node['capistrano']['linked_dirs'].each do |dir|
     recursive true
   end
 
-  end
   bash "ln -fs /var/www/#{node['capistrano']['application']}/shared/#{dir} #{dir}" do
     user node['capistrano']['deploy_user']
     cwd "/var/www/#{node['capistrano']['application']}/current"
