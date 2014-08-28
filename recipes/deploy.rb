@@ -2,11 +2,8 @@ include_recipe 'mysql::server'
 include_recipe 'capistrano::default'
 
 # provide Gemfile if it doesn't exist, e.g. during testing
-template "/var/www/#{node['capistrano']['application']}/current/Gemfile" do
-  source 'Gemfile.erb'
-  owner node['capistrano']['deploy_user']
-  group node['capistrano']['group']
-  mode 0644
+cookbook_file "Gemfile" do
+  path "/var/www/#{node['capistrano']['application']}/current/Gemfile"
   action :create_if_missing
 end
 
