@@ -2,6 +2,14 @@
 include_recipe 'apt'
 include_recipe 'ruby'
 
+# create application folder with the right permissions
+directory "/var/www/#{node['capistrano']['application']}" do
+  owner node['capistrano']['deploy_user']
+  group node['capistrano']['group']
+  mode 0755
+  recursive true
+end
+
 # create folders needed for config files, vendored gems, and web server document root
 %w{ current/public current/vendor/bundle shared/vendor_bundle shared/config }.each do |dir|
   directory "/var/www/#{node['capistrano']['application']}/#{dir}" do
