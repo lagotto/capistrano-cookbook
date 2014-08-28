@@ -20,17 +20,22 @@ end
   end
 end
 
-# symlink shared files and folders
+# symlink shared files and folders, create folder (but not file) if it doesn't exist
 node['capistrano']['linked_files'].each do |file|
-  unless ["config/database.yml", "config/settings.yml"].include?(file)
-    bash "ln -fs /var/www/#{node['capistrano']['application']}/shared/#{file} #{file}" do
-      user node['capistrano']['deploy_user']
-      cwd "/var/www/#{node['capistrano']['application']}/current"
-    end
+  next if ["config/database.yml", "config/settings.yml"].include?(file)
+
+  bash "ln -fs /var/www/#{node['capistrano']['application']}/shared/#{file} #{file}" do
+    user node['capistrano']['deploy_user']
+    cwd "/var/www/#{node['capistrano']['application']}/current"
   end
 end
 
 node['capistrano']['linked_dirs'].each do |dir|
+  unless Dir.exist?("/var/www/#{node['capistrano']['application']}/shared/#{dir}")
+    bash "mkdir -p /var/www/#{node['capistrano']['application']}/shared/#{dir}" do
+      user node['capistrano']['deploy_user']
+    end
+  end
   bash "ln -fs /var/www/#{node['capistrano']['application']}/shared/#{dir} #{dir}" do
     user node['capistrano']['deploy_user']
     cwd "/var/www/#{node['capistrano']['application']}/current"
