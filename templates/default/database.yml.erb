@@ -1,20 +1,17 @@
 defaults: &defaults
-  adapter:   mysql2
-  username:  <%= @params[:username] %>
-  password:  <%= @params[:password] %>
-  host:      <%= @params[:host] %>
-  pool: 10
+  adapter:   <%= @adapter %>
+  username:  <%= @username %>
+  password:  <%= @password %>
+  host:      <%= @host %>
 
 production:
   <<: *defaults
-  database:  <%= @application_name %>_production
+  database:  <%= @application %>_production
 
 development:
   <<: *defaults
-  database:  <%= @application_name %>_development
+  database:  <%= @application %>_development
 
 test:
   <<: *defaults
-  database:  <%= @application_name %>_test
-
-
+  database:  <%= @application %>_test

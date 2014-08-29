@@ -21,17 +21,8 @@ bash "bundle" do
 end
 
 # precompile assets
-if node['capistrano']['rails_env'] != "development"
-  bash "RAILS_ENV=#{node['capistrano']['rails_env']} /usr/local/bin/bundle exec assets:precompile" do
-    user node['capistrano']['deploy_user']
-    cwd "/var/www/#{node['capistrano']['application']}/current"
-  end
-end
-
-# create database and run migrations
-db_app node['capistrano']['application'] do
-  host node['capistrano']['db_host']
-  username node['capistrano']['db_user']
-  password node['capistrano']['db_password']
-  cookbook "capistrano"
+bash "RAILS_ENV=#{node['capistrano']['rails_env']} /usr/local/bin/bundle exec assets:precompile" do
+  user node['capistrano']['deploy_user']
+  cwd "/var/www/#{node['capistrano']['application']}/current"
+  only_if { node['capistrano']['rails_env'] != "development" }
 end
