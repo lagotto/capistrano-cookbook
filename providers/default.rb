@@ -62,6 +62,7 @@ action :bundle_install do
     path "/var/www/#{new_resource.name}/current/Gemfile"
     owner new_resource.user
     group new_resource.group
+    cookbook "capistrano"
     action :create
   end
 
@@ -70,6 +71,7 @@ action :bundle_install do
     path "/var/www/#{new_resource.name}/current/Gemfile.lock"
     owner new_resource.user
     group new_resource.group
+    cookbook "capistrano"
     not_if { new_resource.rails_env == "development" }
     action :create
   end
@@ -102,6 +104,7 @@ action :precompile_assets do
     path "/var/www/#{new_resource.name}/current/Rakefile"
     owner new_resource.user
     group new_resource.group
+    cookbook "capistrano"
     action :create
   end
 
