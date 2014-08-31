@@ -1,5 +1,5 @@
 actions :config
-default_action :cconfig
+default_action :config
 
 attribute :name, :kind_of => String, :name_attribute => true
 attribute :deploy_user, :kind_of => String, :default => "www-data"
