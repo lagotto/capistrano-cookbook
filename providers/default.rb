@@ -63,7 +63,7 @@ action :bundle_install do
     owner new_resource.deploy_user
     group new_resource.group
     cookbook "capistrano"
-    action :create
+    action :create_if_missing
   end
 
   # provide Gemfile.lock if it doesn't exist and we need it
@@ -72,10 +72,8 @@ action :bundle_install do
     owner new_resource.deploy_user
     group new_resource.group
     cookbook "capistrano"
-    if new_resource.rails_env == "development"
-      action :delete
-    else
-      action :create
+    if new_resource.rails_env != "development"
+      action :create_if_missing
     end
   end
 
@@ -100,7 +98,7 @@ action :precompile_assets do
     owner new_resource.deploy_user
     group new_resource.group
     cookbook "capistrano"
-    action :create
+    action :create_if_missing
   end
 
   bash "bundle exec rake assets:precompile" do
