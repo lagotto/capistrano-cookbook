@@ -55,6 +55,27 @@ action :config do
 end
 
 action :bundle_install do
+  run_context.include_recipe 'ruby'
+
+  # provide Gemfile if it doesn't exist, e.g. during testing
+  cookbook_file "Gemfile" do
+    path "/var/www/#{new_resource.name}/current/Gemfile"
+    owner new_resource.deploy_ser
+    group new_resource.group
+    cookbook "capistrano"
+    action :create
+  end
+
+  # provide Gemfile.lock if it doesn't exist and we need it
+  cookbook_file "Gemfile.lock" do
+    path "/var/www/#{new_resource.name}/current/Gemfile.lock"
+    owner new_resource.deploy_ser
+    group new_resource.group
+    cookbook "capistrano"
+    not_if { new_resource.rails_env == "development" }
+    action :create
+  end
+
   bash "bundle install" do
     user new_resource.deploy_user
     environment 'RAILS_ENV' => new_resource.rails_env
@@ -68,6 +89,17 @@ action :bundle_install do
 end
 
 action :precompile_assets do
+  run_context.include_recipe 'ruby'
+
+  # provide Rakefile if it doesn't exist, e.g. during testing
+  cookbook_file "Rakefile" do
+    path "/var/www/#{new_resource.name}/current/Rakefile"
+    owner new_resource.deploy_user
+    group new_resource.group
+    cookbook "capistrano"
+    action :create
+  end
+
   bash "bundle exec rake assets:precompile" do
     user new_resource.deploy_user
     environment 'RAILS_ENV' => new_resource.rails_env
@@ -78,6 +110,8 @@ action :precompile_assets do
 end
 
 action :migrate do
+  run_context.include_recipe 'ruby'
+
   bash "bundle exec rake db:migrate" do
     user new_resource.deploy_user
     environment 'RAILS_ENV' => new_resource.rails_env
