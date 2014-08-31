@@ -47,7 +47,7 @@ action :setup do
   end
 
   # symlink files
-  Array(new_resource.linked_files + new_resource.templates).each do |file|
+  (Array(new_resource.linked_files) + Array(new_resource.templates)).each do |file|
     link "/var/www/#{new_resource.name}/shared/#{file}" do
       to "/var/www/#{new_resource.name}/current/#{file}"
     end
