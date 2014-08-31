@@ -10,7 +10,7 @@ end
 
 action :setup do
   # create shared folders
-  %W{ #{new_resource.name} #{new_resource.name}/current #{new_resource.name}/shared #{new_resource.name}/shared/config  #{new_resource.name}/shared/vendor }.each do |dir|
+  %W{ #{new_resource.name} #{new_resource.name}/current #{new_resource.name}/shared #{new_resource.name}/shared/config #{new_resource.name}/shared/vendor #{new_resource.name}/shared/public #{new_resource.name}/shared/tmp }.each do |dir|
     directory "/var/www/#{dir}" do
       owner new_resource.user
       group new_resource.group
