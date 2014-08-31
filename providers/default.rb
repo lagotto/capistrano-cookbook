@@ -38,7 +38,7 @@ action :config do
           end
         end
       else
-        # create file from template and symlink it
+        # create file from template and copy it to the current folder
         template "/var/www/#{new_resource.name}/shared/#{path}" do
           source files.last
           owner new_resource.deploy_user
@@ -46,9 +46,11 @@ action :config do
           mode '0755'
         end
 
-        link "/var/www/#{new_resource.name}/current/#{path}" do
-          to "/var/www/#{new_resource.name}/shared/#{path}"
-          link_type :hard
+        file "/var/www/#{new_resource.name}/current/#{path}" do
+          owner new_resource.deploy_user
+          group new_resource.group
+          mode 0755
+          content ::File.open("/var/www/#{new_resource.name}/shared/#{path}").read
         end
       end
     end
