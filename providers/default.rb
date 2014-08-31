@@ -18,7 +18,7 @@ action :config do
   # create shared folders
   %W{ #{new_resource.name} #{new_resource.name}/current #{new_resource.name}/current #{new_resource.name}/shared }.each do |dir|
     directory "/var/www/#{dir}" do
-      owner new_resource.user
+      owner new_resource.deploy_user
       group new_resource.group
       mode '0755'
       recursive true
