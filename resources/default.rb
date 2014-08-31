@@ -1,10 +1,7 @@
-actions :setup, :bundle_install, :precompile_assets, :restart
-default_action :setup
+actions :config, :restart
+default_action :cconfig
 
 attribute :name, :kind_of => String, :name_attribute => true
-attribute :user, :kind_of => String, :default => "www-data"
+attribute :deploy_user, :kind_of => String, :default => "www-data"
 attribute :group, :kind_of => String, :default => "www-data"
-attribute :rails_env, :kind_of => String, :default => "production"
-attribute :linked_dirs, :kind_of => [Array, NilClass], :default => nil
-attribute :linked_files, :kind_of => [Array, NilClass], :default => nil
 attribute :templates, :kind_of => [Array, NilClass], :default => nil

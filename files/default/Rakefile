@@ -1,6 +1,0 @@
-# encoding: UTF-8
-
-namespace :assets do
-  task :precompile do
-  end
-end
