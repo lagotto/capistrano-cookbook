@@ -67,17 +67,6 @@ action :bundle_install do
     action :create_if_missing
   end
 
-  # provide Gemfile.lock if it doesn't exist and we need it
-  cookbook_file "Gemfile.lock" do
-    path "/var/www/#{new_resource.name}/current/Gemfile.lock"
-    owner new_resource.deploy_user
-    group new_resource.group
-    cookbook "capistrano"
-    if new_resource.rails_env != "development"
-      action :create_if_missing
-    end
-  end
-
   # make sure we can use the bundle command
   bash "bundle install" do
     user new_resource.deploy_user
