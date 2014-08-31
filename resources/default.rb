@@ -1,4 +1,4 @@
-actions :config, :restart
+actions :config
 default_action :cconfig
 
 attribute :name, :kind_of => String, :name_attribute => true

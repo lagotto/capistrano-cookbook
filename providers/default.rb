@@ -9,6 +9,12 @@ def load_current_resource
 end
 
 action :config do
+  execute "restart" do
+    cwd  "/var/www/#{new_resource.name}/current"
+    command "mkdir -p tmp && touch tmp/restart.txt"
+    action :nothing
+  end
+
   # create shared folders
   %W{ #{new_resource.name} #{new_resource.name}/current #{new_resource.name}/current #{new_resource.name}/shared }.each do |dir|
     directory "/var/www/#{dir}" do
@@ -45,15 +51,9 @@ action :config do
 
         link "/var/www/#{new_resource.name}/current/#{path}" do
           to "/var/www/#{new_resource.name}/shared/#{path}"
+          notifies :run, "execute[restart]"
         end
       end
     end
-  end
-end
-
-action :restart do
-  bash "restart rails application" do
-    cwd  "/var/www/#{new_resource.name}/current"
-    code "mkdir -p tmp && touch tmp/restart.txt"
   end
 end
