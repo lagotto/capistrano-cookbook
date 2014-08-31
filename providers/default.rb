@@ -72,16 +72,19 @@ action :bundle_install do
     owner new_resource.deploy_user
     group new_resource.group
     cookbook "capistrano"
-    not_if { new_resource.rails_env == "development" }
-    action :create
+    if new_resource.rails_env == "development"
+      action :delete
+    else
+      action :create
+    end
   end
 
+  # make sure we can use the bundle command
   bash "bundle install" do
     user new_resource.deploy_user
-    environment 'RAILS_ENV' => new_resource.rails_env
     cwd "/var/www/#{new_resource.name}/current"
     if new_resource.rails_env == "development"
-      code "bundle install"
+      code "bundle install --no-deployment"
     else
       code "bundle install --path vendor/bundle --deployment --without development test"
     end
