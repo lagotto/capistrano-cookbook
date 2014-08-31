@@ -41,15 +41,15 @@ action :setup do
 
   # symlink shared folders
   Array(new_resource.linked_dirs).each do |dir|
-    link "/var/www/#{new_resource.name}/shared/#{dir}" do
-      to "/var/www/#{new_resource.name}/current/#{dir}"
+    link "/var/www/#{new_resource.name}/current/#{dir}" do
+      to "/var/www/#{new_resource.name}/shared/#{dir}"
     end
   end
 
   # symlink files
   (Array(new_resource.linked_files) + Array(new_resource.templates)).each do |file|
-    link "/var/www/#{new_resource.name}/shared/#{file}" do
-      to "/var/www/#{new_resource.name}/current/#{file}"
+    link "/var/www/#{new_resource.name}/current/#{file}" do
+      to "/var/www/#{new_resource.name}/shared/#{file}"
     end
   end
 end
@@ -122,6 +122,31 @@ action :precompile_assets do
     cwd "/var/www/#{new_resource.name}/current"
     code "bundle exec rake assets:precompile"
     not_if { new_resource.rails_env == "development" }
+    new_resource.updated_by_last_action(true)
+  end
+end
+
+action :migrate do
+  bash "bundle exec rake db:migrate" do
+    user node['capistrano']['deploy_user']
+    environment 'RAILS_ENV' => node['capistrano']['rails_env']
+    cwd "/var/www/#{node['capistrano']['application']}/current"
+    new_resource.updated_by_last_action(true)
+  end
+end
+
+action :drop do
+  bash "bundle exec rake db:drop" do
+    user node['capistrano']['deploy_user']
+    environment 'RAILS_ENV' => node['capistrano']['rails_env']
+    cwd "/var/www/#{node['capistrano']['application']}/current"
+    new_resource.updated_by_last_action(true)
+  end
+end
+
+action :cleanup do
+  file "/var/www/#{new_resource.name}/shared/config/database.yml" do
+    action :delete
     new_resource.updated_by_last_action(true)
   end
 end
