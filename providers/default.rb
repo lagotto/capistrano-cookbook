@@ -48,6 +48,7 @@ action :config do
 
         link "/var/www/#{new_resource.name}/current/#{path}" do
           to "/var/www/#{new_resource.name}/shared/#{path}"
+          link_type :hard
         end
       end
     end
