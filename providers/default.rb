@@ -60,7 +60,7 @@ action :bundle_install do
   # provide Gemfile if it doesn't exist, e.g. during testing
   cookbook_file "Gemfile" do
     path "/var/www/#{new_resource.name}/current/Gemfile"
-    owner new_resource.deploy_ser
+    owner new_resource.deploy_user
     group new_resource.group
     cookbook "capistrano"
     action :create
@@ -69,7 +69,7 @@ action :bundle_install do
   # provide Gemfile.lock if it doesn't exist and we need it
   cookbook_file "Gemfile.lock" do
     path "/var/www/#{new_resource.name}/current/Gemfile.lock"
-    owner new_resource.deploy_ser
+    owner new_resource.deploy_user
     group new_resource.group
     cookbook "capistrano"
     not_if { new_resource.rails_env == "development" }
