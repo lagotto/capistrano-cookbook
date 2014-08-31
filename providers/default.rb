@@ -40,7 +40,7 @@ action :config do
       else
         # create file from template and copy it to the current folder
         template "/var/www/#{new_resource.name}/shared/#{path}" do
-          source files.last
+          source "#{files.last}.erb"
           owner new_resource.deploy_user
           group new_resource.group
           mode '0755'
