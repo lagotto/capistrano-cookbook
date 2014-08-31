@@ -8,7 +8,7 @@ def load_current_resource
   @current_resource = Chef::Resource::Capistrano.new(new_resource.name)
 end
 
-action :create do
+action :setup do
   # create shared folders
   %w{ #{new_resource.name} #{new_resource.name}/current #{new_resource.name}/shared #{new_resource.name}/shared/config  #{new_resource.name}/shared/vendor }.each do |dir|
     directory "/var/www/#{dir}" do
@@ -20,7 +20,7 @@ action :create do
   end
 
   # create additional folders that should be linked
-  new_resource.linked_dirs.each do |dir|
+  Array(new_resource.linked_dirs).each do |dir|
     directory "/var/www/#{new_resource.name}/shared/#{dir}" do
       owner new_resource.user
       group new_resource.group
@@ -28,18 +28,26 @@ action :create do
       recursive true
     end
   end
-end
 
-action :symlink do
+  # create config files, respect folder location
+  Array(new_resource.config_files).each do |config_file|
+    template "/var/www/#{new_resource.name}/shared/#{config_file}" do
+      source config_file.split("/").last
+      owner new_resource.user
+      group new_resource.group
+      mode '0755'
+    end
+  end
+
   # symlink shared folders
-  new_resource.linked_dirs.each do |dir|
+  Array(new_resource.linked_dirs).each do |dir|
     link "/var/www/#{new_resource.name}/shared/#{dir}" do
       to "/var/www/#{new_resource.name}/current/#{dir}"
     end
   end
 
   # symlink files
-  new_resource.linked_files.each do |file|
+  Array(new_resource.linked_files + new_resource.config_files).each do |file|
     link "/var/www/#{new_resource.name}/shared/#{file}" do
       to "/var/www/#{new_resource.name}/current/#{file}"
     end
