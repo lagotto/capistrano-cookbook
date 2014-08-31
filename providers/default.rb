@@ -8,13 +8,10 @@ def load_current_resource
   @current_resource = Chef::Resource::Capistrano.new(new_resource.name)
 end
 
-action :config do
-  execute "restart" do
-    cwd  "/var/www/#{new_resource.name}/current"
-    command "mkdir -p tmp && touch tmp/restart.txt"
-    action :nothing
-  end
+action :deploy do
+end
 
+action :config do
   # create shared folders
   %W{ #{new_resource.name} #{new_resource.name}/current #{new_resource.name}/current #{new_resource.name}/shared }.each do |dir|
     directory "/var/www/#{dir}" do
@@ -51,9 +48,47 @@ action :config do
 
         link "/var/www/#{new_resource.name}/current/#{path}" do
           to "/var/www/#{new_resource.name}/shared/#{path}"
-          notifies :run, "execute[restart]"
         end
       end
     end
+  end
+end
+
+action :bundle_install do
+  bash "bundle install" do
+    user new_resource.deploy_user
+    environment 'RAILS_ENV' => new_resource.rails_env
+    cwd "/var/www/#{new_resource.name}/current"
+    if new_resource.rails_env == "development"
+      code "bundle install"
+    else
+      code "bundle install --path vendor/bundle --deployment --without development test"
+    end
+  end
+end
+
+action :precompile_assets do
+  bash "bundle exec rake assets:precompile" do
+    user new_resource.deploy_user
+    environment 'RAILS_ENV' => new_resource.rails_env
+    cwd "/var/www/#{new_resource.name}/current"
+    not_if { new_resource.rails_env == new_resource.rails_env }
+    new_resource.updated_by_last_action(true)
+  end
+end
+
+action :migrate do
+  bash "bundle exec rake db:migrate" do
+    user new_resource.deploy_user
+    environment 'RAILS_ENV' => new_resource.rails_env
+    cwd "/var/www/#{new_resource.name}/current"
+    new_resource.updated_by_last_action(true)
+  end
+end
+
+action :restart do
+  execute "restart" do
+    cwd  "/var/www/#{new_resource.name}/current"
+    command "mkdir -p tmp && touch tmp/restart.txt"
   end
 end
