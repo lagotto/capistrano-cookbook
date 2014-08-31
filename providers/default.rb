@@ -29,10 +29,10 @@ action :setup do
     end
   end
 
-  # create config files, respect folder location
-  Array(new_resource.config_files).each do |config_file|
-    template "/var/www/#{new_resource.name}/shared/#{config_file}" do
-      source config_file.split("/").last
+  # create config files from templates in parent cookbook, respect folder location
+  Array(new_resource.templates).each do |file|
+    template "/var/www/#{new_resource.name}/shared/#{file}" do
+      source file.split("/").last
       owner new_resource.user
       group new_resource.group
       mode '0755'
@@ -47,7 +47,7 @@ action :setup do
   end
 
   # symlink files
-  Array(new_resource.linked_files + new_resource.config_files).each do |file|
+  Array(new_resource.linked_files + new_resource.templates).each do |file|
     link "/var/www/#{new_resource.name}/shared/#{file}" do
       to "/var/www/#{new_resource.name}/current/#{file}"
     end

@@ -7,4 +7,4 @@ attribute :group, :kind_of => String, :default => "www-data"
 attribute :rails_env, :kind_of => String, :default => "production"
 attribute :linked_dirs, :kind_of => [Array, NilClass], :default => nil
 attribute :linked_files, :kind_of => [Array, NilClass], :default => nil
-attribute :config_files, :kind_of => [Array, NilClass], :default => nil
+attribute :templates, :kind_of => [Array, NilClass], :default => nil
