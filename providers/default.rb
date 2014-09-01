@@ -13,7 +13,7 @@ end
 
 action :config do
   # create shared folders
-  %W{ #{new_resource.name} #{new_resource.name}/current #{new_resource.name}/current #{new_resource.name}/shared }.each do |dir|
+  %W{ #{new_resource.name} #{new_resource.name}/current #{new_resource.name}/current/vendor #{new_resource.name}/shared }.each do |dir|
     directory "/var/www/#{dir}" do
       owner new_resource.deploy_user
       group new_resource.group
@@ -40,7 +40,7 @@ action :bundle_install do
     user new_resource.deploy_user
     cwd "/var/www/#{new_resource.name}/current"
     if new_resource.rails_env == "development"
-      code "bundle install --no-deployment"
+      code "bundle install --path vendor/bundle --no-deployment"
     else
       code "bundle install --path vendor/bundle --deployment --without development test"
     end
