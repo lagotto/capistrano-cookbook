@@ -24,23 +24,18 @@ action :create do
         end
       end
     else
-      # create file from template and copy it to the current folder
-      template "/var/www/#{new_resource.application}/shared/#{new_resource.name}" do
-        source new_resource.source
-        owner new_resource.deploy_user
-        group new_resource.group
-        mode '0755'
-        variables(
-          :application => new_resource.application,
-          :params      => new_resource.params
-        )
-      end
-
-      file "/var/www/#{new_resource.application}/current/#{new_resource.name}" do
-        owner new_resource.deploy_user
-        group new_resource.group
-        mode '0755'
-        content ::IO.read "/var/www/#{new_resource.application}/shared/#{new_resource.name}"
+      # create file from template
+      %w{ current shared }.each do |dir|
+        template "/var/www/#{new_resource.application}/shared/#{new_resource.name}" do
+          source new_resource.source
+          owner new_resource.deploy_user
+          group new_resource.group
+          mode '0644'
+          variables(
+            :application => new_resource.application,
+            :params      => new_resource.params
+          )
+        end
       end
     end
   end
