@@ -40,7 +40,7 @@ action :create do
         owner new_resource.deploy_user
         group new_resource.group
         mode '0755'
-        content ::File.open("/var/www/#{new_resource.name}/shared/#{new_resource.name}").read
+        content ::File.open("/var/www/#{new_resource.application}/shared/#{new_resource.name}").read
       end
     end
   end
