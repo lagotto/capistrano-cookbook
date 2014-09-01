@@ -26,7 +26,7 @@ action :create do
     else
       # create file from template and copy it to the current folder
       template "/var/www/#{new_resource.application}/shared/#{new_resource.name}" do
-        source "#{files.last}.erb"
+        source new_resource.source
         owner new_resource.deploy_user
         group new_resource.group
         mode '0755'
