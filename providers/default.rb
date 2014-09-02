@@ -40,9 +40,9 @@ action :bundle_install do
     user new_resource.deploy_user
     cwd "/var/www/#{new_resource.name}/current"
     if new_resource.rails_env == "development"
-      code "bundle install --path vendor/bundle --no-deployment"
+      command "bundle install --path vendor/bundle --no-deployment"
     else
-      code "bundle install --path vendor/bundle --deployment --without development test"
+      command "bundle install --path vendor/bundle --deployment --without development test"
     end
   end
 end
