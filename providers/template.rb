@@ -20,7 +20,7 @@ action :create do
         directory "/var/www/#{new_resource.application}/#{parent_dir}/#{dir}" do
           owner new_resource.deploy_user
           group new_resource.group
-          mode "0755"
+          mode '0755'
         end
       end
     else
@@ -30,11 +30,12 @@ action :create do
           source new_resource.source
           owner new_resource.deploy_user
           group new_resource.group
-          mode "0755"
+          mode '0644'
           variables(
             :application => new_resource.application,
             :params      => new_resource.params
           )
+          action :create_if_missing
         end
       end
     end
