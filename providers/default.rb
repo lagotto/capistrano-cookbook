@@ -37,7 +37,7 @@ action :bundle_install do
 
   # make sure we can use the bundle command
   execute "bundle install" do
-    user new_resource.deploy_user
+    user new_resource.user
     cwd "/var/www/#{new_resource.name}/current"
     if new_resource.rails_env == "development"
       command "bundle install --path vendor/bundle --no-deployment"
@@ -60,7 +60,7 @@ action :precompile_assets do
   end
 
   execute "bundle exec rake assets:precompile" do
-    user new_resource.deploy_user
+    user new_resource.user
     environment 'RAILS_ENV' => new_resource.rails_env
     cwd "/var/www/#{new_resource.name}/current"
     not_if { new_resource.rails_env == "development" }
@@ -79,7 +79,7 @@ action :migrate do
 
   # load/reload seed data
   execute "bundle exec rake db:seed" do
-    user new_resource.deploy_user
+    user new_resource.user
     environment 'RAILS_ENV' => new_resource.rails_env
     cwd "/var/www/#{new_resource.name}/current"
   end
