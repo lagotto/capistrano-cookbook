@@ -25,8 +25,8 @@ action :create do
       end
     else
       # create file from template
-      %w{ current shared }.each do |dir|
-        template "/var/www/#{new_resource.application}/shared/#{new_resource.name}" do
+      %w{ current shared }.each do |parent_dir|
+        template "/var/www/#{new_resource.application}/#{parent_dir}/#{new_resource.name}" do
           source new_resource.source
           owner new_resource.deploy_user
           group new_resource.group
