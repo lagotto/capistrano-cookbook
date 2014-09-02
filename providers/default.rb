@@ -71,19 +71,18 @@ end
 action :migrate do
   run_context.include_recipe 'ruby'
 
-  # load/reload seed data
-  bash "bundle exec rake db:seed" do
+  # run database migrations
+  execute "bundle exec rake db:migrate" do
     user new_resource.deploy_user
     environment 'RAILS_ENV' => new_resource.rails_env
     cwd "/var/www/#{new_resource.name}/current"
-    new_resource.updated_by_last_action(true)
   end
 
-  # run database migrations
-  bash "RAILS_ENV=#{new_resource.rails_env} bundle exec rake db:migrate" do
+  # load/reload seed data
+  execute "bundle exec rake db:seed" do
     user new_resource.deploy_user
+    environment 'RAILS_ENV' => new_resource.rails_env
     cwd "/var/www/#{new_resource.name}/current"
-    new_resource.updated_by_last_action(true)
   end
 end
 
