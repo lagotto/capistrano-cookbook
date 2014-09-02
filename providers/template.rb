@@ -18,7 +18,7 @@ action :create do
       dir = files[0..i].join("/")
       %w{ current shared }.each do |parent_dir|
         directory "/var/www/#{new_resource.application}/#{parent_dir}/#{dir}" do
-          owner new_resource.deploy_user
+          owner new_resource.user
           group new_resource.group
           mode '0755'
         end
@@ -28,7 +28,7 @@ action :create do
       %w{ current shared }.each do |parent_dir|
         template "/var/www/#{new_resource.application}/#{parent_dir}/#{new_resource.name}" do
           source new_resource.source
-          owner new_resource.deploy_user
+          owner new_resource.user
           group new_resource.group
           mode '0644'
           variables(

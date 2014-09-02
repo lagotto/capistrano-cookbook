@@ -15,7 +15,7 @@ action :config do
   # create shared folders
   %W{ #{new_resource.name} #{new_resource.name}/current #{new_resource.name}/current/vendor #{new_resource.name}/shared }.each do |dir|
     directory "/var/www/#{dir}" do
-      owner new_resource.deploy_user
+      owner new_resource.user
       group new_resource.group
       mode '0755'
       recursive true
@@ -29,7 +29,7 @@ action :bundle_install do
   # provide Gemfile if it doesn't exist, e.g. during testing
   cookbook_file "Gemfile" do
     path "/var/www/#{new_resource.name}/current/Gemfile"
-    owner new_resource.deploy_user
+    owner new_resource.user
     group new_resource.group
     cookbook "capistrano"
     action :create_if_missing
@@ -53,7 +53,7 @@ action :precompile_assets do
   # provide Rakefile if it doesn't exist, e.g. during testing
   cookbook_file "Rakefile" do
     path "/var/www/#{new_resource.name}/current/Rakefile"
-    owner new_resource.deploy_user
+    owner new_resource.user
     group new_resource.group
     cookbook "capistrano"
     action :create_if_missing
@@ -72,7 +72,7 @@ action :migrate do
 
   # run database migrations
   execute "bundle exec rake db:migrate" do
-    user new_resource.deploy_user
+    user new_resource.user
     environment 'RAILS_ENV' => new_resource.rails_env
     cwd "/var/www/#{new_resource.name}/current"
   end
