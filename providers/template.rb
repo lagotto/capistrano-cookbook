@@ -4,8 +4,6 @@ end
 
 use_inline_resources
 
-require 'securerandom'
-
 def load_current_resource
   @current_resource = Chef::Resource::CapistranoTemplate.new(new_resource.name)
 end
@@ -37,7 +35,7 @@ action :create do
             :application => new_resource.application,
             :params      => new_resource.params
           )
-          action :create_if_missing
+          action :create
         end
       end
     end
