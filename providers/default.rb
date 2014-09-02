@@ -1,8 +1,8 @@
-use_inline_resources
-
 def whyrun_supported?
   true
 end
+
+use_inline_resources
 
 def load_current_resource
   @current_resource = Chef::Resource::Capistrano.new(new_resource.name)
@@ -36,7 +36,7 @@ action :bundle_install do
   end
 
   # make sure we can use the bundle command
-  bash "bundle install" do
+  execute "bundle install" do
     user new_resource.deploy_user
     cwd "/var/www/#{new_resource.name}/current"
     if new_resource.rails_env == "development"
@@ -59,12 +59,11 @@ action :precompile_assets do
     action :create_if_missing
   end
 
-  bash "bundle exec rake assets:precompile" do
+  execute "bundle exec rake assets:precompile" do
     user new_resource.deploy_user
     environment 'RAILS_ENV' => new_resource.rails_env
     cwd "/var/www/#{new_resource.name}/current"
-    not_if { new_resource.rails_env == new_resource.rails_env }
-    new_resource.updated_by_last_action(true)
+    not_if { new_resource.rails_env == "development" }
   end
 end
 
