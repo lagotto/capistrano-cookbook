@@ -1,8 +1,10 @@
-use_inline_resources
-
 def whyrun_supported?
   true
 end
+
+use_inline_resources
+
+require 'securerandom'
 
 def load_current_resource
   @current_resource = Chef::Resource::CapistranoTemplate.new(new_resource.name)
