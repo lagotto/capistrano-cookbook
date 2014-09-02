@@ -80,9 +80,8 @@ action :migrate do
   end
 
   # run database migrations
-  bash "bundle exec rake db:migrate" do
+  bash "RAILS_ENV=#{new_resource.rails_env} bundle exec rake db:migrate" do
     user new_resource.deploy_user
-    environment 'RAILS_ENV' => new_resource.rails_env
     cwd "/var/www/#{new_resource.name}/current"
     new_resource.updated_by_last_action(true)
   end
