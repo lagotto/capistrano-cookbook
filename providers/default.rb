@@ -59,7 +59,7 @@ action :precompile_assets do
     action :create_if_missing
   end
 
-  execute "bundle exec rake assets:precompile" do
+  execute "bundle exec rake assets:clean assets:precompile" do
     user new_resource.user
     environment 'RAILS_ENV' => new_resource.rails_env
     cwd "/var/www/#{new_resource.name}/current"
