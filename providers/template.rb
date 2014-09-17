@@ -30,7 +30,7 @@ action :create do
           source new_resource.source
           owner new_resource.user
           group new_resource.group
-          mode '0644'
+          mode '0755'
           variables(
             :application => new_resource.application,
             :params      => new_resource.params
