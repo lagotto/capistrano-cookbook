@@ -28,9 +28,6 @@ action :create do
       %w{ current shared }.each do |parent_dir|
         template "/var/www/#{new_resource.application}/#{parent_dir}/#{new_resource.name}" do
           source new_resource.source
-          owner new_resource.user
-          group new_resource.group
-          mode '0755'
           variables(
             :application => new_resource.application,
             :params      => new_resource.params
