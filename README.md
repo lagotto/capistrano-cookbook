@@ -24,17 +24,17 @@ The `capistrano` LWRP creates files from templates, e.g. application-specific se
 # Attribute Parameters
 
 * `name` - Name of the application.
-* `deploy_user` - Owner for application folder. Defaults to `www-data`.
-* `group` - Group for application folder. Defaults to `www-data`.
+* `user` - Owner for application folder. Defaults to `vagrant`.
+* `group` - Group for application folder. Defaults to `vagrant`.
 
 
 Usage
 -----
-For example, to create `shared` and `current` folders, and a `settings.yml` configuration file from a template in the parent cookbook, run:
+For example, to create `shared` and `current` folders, and a `application.yml` configuration file from a template in the parent cookbook, run:
 
 ```ruby
 capistrano "myproj" do
-  templates %w{ config/settings.yml }
+  templates %w{ config/application.yml }
 end
 ```
 
