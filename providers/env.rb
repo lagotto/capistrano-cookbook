@@ -9,17 +9,13 @@ def load_current_resource
 end
 
 action :load do
-  # make sure the dotenv gem is installed
-  r = gempackage "dotenv" do
-    action :nothing
+  chef_gem "dotenv" do
+    action :install
   end
-
-  r.runaction(:install)
-
-  require 'dotenv'
 
   # load ENV variables from .env
   # all user-specific configuration settings are stored in .env
+  require 'dotenv'
   Dotenv.load
 end
 
