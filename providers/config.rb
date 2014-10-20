@@ -28,6 +28,6 @@ action :copy do
 
   # copy application.yml from current/config to shared/config
   remote_file "/var/www/#{new_resource.name}/shared/config/application.yml" do
-    source "/var/www/#{new_resource.name}/current/config/application.yml"
+    source "file:///var/www/#{new_resource.name}/current/config/application.yml"
   end
 end
