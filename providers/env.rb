@@ -16,7 +16,7 @@ action :load do
   # load ENV variables from .env
   # all user-specific configuration settings are stored in .env
   require 'dotenv'
-  Dotenv.load
+  Dotenv.load "/var/www/#{new_resource.name}/current/.env"
 end
 
 action :copy do
