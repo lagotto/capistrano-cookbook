@@ -20,8 +20,8 @@ action :copy do
   # create shared and shared/config folders if they don't exist already
   %w{ shared shared/config }.each do |dir|
     directory "/var/www/#{new_resource.name}/#{dir}" do
-      owner ENV['USER']
-      group ENV['GROUP']
+      owner new_resource.user
+      group new_resource.group
       mode '0755'
     end
   end
