@@ -10,6 +10,12 @@ end
 
 action :load do
   # make sure the dotenv gem is installed
+  r = gempackage "dotenv" do
+    action :nothing
+  end
+
+  r.runaction(:install)
+
   require 'dotenv'
 
   # load ENV variables from .env
