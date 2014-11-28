@@ -67,6 +67,25 @@ action :precompile_assets do
   end
 end
 
+action :ember_build do
+  run_context.include_recipe 'ruby'
+
+  # provide Rakefile if it doesn't exist, e.g. during testing
+  cookbook_file "Rakefile" do
+    path "/var/www/#{new_resource.name}/current/Rakefile"
+    owner new_resource.user
+    group new_resource.group
+    cookbook "capistrano"
+    action :create_if_missing
+  end
+
+  execute "bundle exec rake ember:build" do
+    user new_resource.user
+    environment 'RAILS_ENV' => new_resource.rails_env
+    cwd "/var/www/#{new_resource.name}/current"
+  end
+end
+
 action :migrate do
   run_context.include_recipe 'ruby'
 
