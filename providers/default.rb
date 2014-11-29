@@ -47,6 +47,16 @@ action :bundle_install do
   end
 end
 
+action :bower_install do
+  execute "install bower packages" do
+    user new_resource.user
+    cwd "/var/www/#{new_resource.name}/current/ember-app"
+    node['bower']['packages'].each do |pkg|
+      command "bower install --save #{pkg}"
+    end
+  end
+end
+
 action :precompile_assets do
   run_context.include_recipe 'ruby'
 
