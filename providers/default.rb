@@ -58,8 +58,10 @@ action :npm_install do
 
   # install npm packages
   node['npm_packages'].each do |pkg|
-    nodejs_npm pkg do
+    execute "npm install -g #{pkg}" do
+      user new_resource.user
       environment 'NPM_CONFIG_PREFIX' => ENV["NPM_CONFIG_PREFIX"]
+      cwd "/var/www/#{new_resource.name}/current"
     end
   end
 end
