@@ -60,7 +60,7 @@ action :npm_install do
   node['npm_packages'].each do |pkg|
     execute "npm install -g #{pkg}" do
       user new_resource.user
-      environment 'NPM_CONFIG_PREFIX' => ENV["NPM_CONFIG_PREFIX"]
+      environment 'npm_config_prefix' => ENV["NPM_CONFIG_PREFIX"]
     end
   end
 end
@@ -80,7 +80,7 @@ action :bower_install do
   execute "bundle exec rake bower:install:deployment" do
     user new_resource.user
     environment ({ 'RAILS_ENV' => new_resource.rails_env,
-                  'NPM_CONFIG_PREFIX' => ENV["NPM_CONFIG_PREFIX"] })
+                  'npm_config_prefix' => ENV["NPM_CONFIG_PREFIX"] })
     cwd "/var/www/#{new_resource.name}/current"
   end
 end
