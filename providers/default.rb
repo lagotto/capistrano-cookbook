@@ -53,16 +53,17 @@ action :npm_install do
     owner new_resource.user
     group new_resource.group
     mode '0755'
-    action :create_if_missing
+    action :create
+  end
+
+  # make this directory the default
+  execute "npm config set prefix '/home/#{new_resource.user}/npm-global'" do
+    user new_resource.user
   end
 
   # install npm packages
   node['npm_packages'].each do |pkg|
-    nodejs_npm pkg do
-      path "/home/#{user new_resource.user}/npm-global/#{pkg}"
-      json true
-      user new_resource.user
-    end
+    nodejs_npm pkg
   end
 end
 
