@@ -58,11 +58,11 @@ action :npm_install do
 
   # install npm packages
   node['npm_packages'].each do |pkg|
-    execute "npm install #{pkg}" do
+    execute "npm install -g #{pkg}" do
       user new_resource.user
-      # creates "/home/#{new_resource.user}/npm-global/lib/node_modules/#{pkg}/"
+      creates "/home/#{new_resource.user}/npm-global/lib/node_modules/#{pkg}/"
       action :run
-      environment ({ 'NPM_CONFIG_PREFIX' => "/home/#{new_resource.user}/npm-global" })
+      environment ({ 'npm_global_prefix' => "/home/#{new_resource.user}/npm-global" })
     end
   end
 end
@@ -82,7 +82,7 @@ action :bower_install do
   execute "bundle exec rake bower:install:deployment" do
     user new_resource.user
     environment ({ 'RAILS_ENV' => new_resource.rails_env,
-                   'NPM_CONFIG_PREFIX' => "/home/#{new_resource.user}/npm-global" })
+                   'npm_global_prefix' => "/home/#{new_resource.user}/npm-global" })
     cwd "/var/www/#{new_resource.name}/current"
   end
 end
