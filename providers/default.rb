@@ -47,6 +47,25 @@ action :bundle_install do
   end
 end
 
+action :npm_install do
+  run_context.include_recipe 'ruby'
+
+  # provide Rakefile if it doesn't exist, e.g. during testing
+  cookbook_file "Rakefile" do
+    path "/var/www/#{new_resource.name}/current/Rakefile"
+    owner new_resource.user
+    group new_resource.group
+    cookbook "capistrano"
+    action :create_if_missing
+  end
+
+  execute "bundle exec rake ember:npm:install" do
+    user new_resource.user
+    environment 'RAILS_ENV' => new_resource.rails_env
+    cwd "/var/www/#{new_resource.name}/current"
+  end
+end
+
 action :bower_install do
   run_context.include_recipe 'ruby'
 
@@ -78,7 +97,7 @@ action :precompile_assets do
     action :create_if_missing
   end
 
-  execute "bundle exec rake assets:clean assets:precompile" do
+  execute "bundle exec rake assets:precompile" do
     user new_resource.user
     environment 'RAILS_ENV' => new_resource.rails_env
     cwd "/var/www/#{new_resource.name}/current"
