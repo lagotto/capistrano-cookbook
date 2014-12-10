@@ -57,7 +57,7 @@ action :npm_install do
   end
 
   # make this directory the default
-  execute "npm config set prefix '/home/#{new_resource.user}/npm-global'" do
+  execute "sudo npm config set prefix '/home/#{new_resource.user}/npm-global'" do
     user new_resource.user
   end
 
