@@ -48,21 +48,21 @@ action :bundle_install do
 end
 
 action :npm_install do
-  run_context.include_recipe 'ruby'
-
-  # provide Rakefile if it doesn't exist, e.g. during testing
-  cookbook_file "Rakefile" do
-    path "/var/www/#{new_resource.name}/current/Rakefile"
+  # create directory for global installs
+  directory "/home/#{new_resource.user}/npm-global" do
     owner new_resource.user
     group new_resource.group
-    cookbook "capistrano"
+    mode '0755'
     action :create_if_missing
   end
 
-  execute "bundle exec rake ember:npm:install" do
-    user new_resource.user
-    environment 'RAILS_ENV' => new_resource.rails_env
-    cwd "/var/www/#{new_resource.name}/current"
+  # install npm packages
+  node['npm_packages'].each do |pkg|
+    nodejs_npm pkg do
+      path "/home/#{user new_resource.user}/npm-global/#{pkg}"
+      json true
+      user new_resource.user
+    end
   end
 end
 
