@@ -56,14 +56,11 @@ action :npm_install do
     action :create
   end
 
-  # make this directory the default
-  execute "sudo npm config set prefix '/home/#{new_resource.user}/npm-global'" do
-    user new_resource.user
-  end
-
   # install npm packages
   node['npm_packages'].each do |pkg|
-    nodejs_npm pkg
+    nodejs_npm pkg do
+      environment 'NPM_CONFIG_PREFIX' => ENV["NPM_CONFIG_PREFIX"]
+    end
   end
 end
 
@@ -81,7 +78,8 @@ action :bower_install do
 
   execute "bundle exec rake bower:install:deployment" do
     user new_resource.user
-    environment 'RAILS_ENV' => new_resource.rails_env
+    environment { 'RAILS_ENV' => new_resource.rails_env,
+                  'NPM_CONFIG_PREFIX' => ENV["NPM_CONFIG_PREFIX"] }
     cwd "/var/www/#{new_resource.name}/current"
   end
 end
