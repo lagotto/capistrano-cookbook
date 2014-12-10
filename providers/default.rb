@@ -60,7 +60,9 @@ action :npm_install do
   node['npm_packages'].each do |pkg|
     execute "npm install -g #{pkg}" do
       user new_resource.user
-      environment 'npm_config_prefix' => ENV["NPM_CONFIG_PREFIX"]
+      creates "/home/#{new_resource.user}/npm-global/lib/node_modules/#{pkg}/"
+      action :run
+      environment ({ 'npm_config_prefix' => ENV["NPM_CONFIG_PREFIX"] })
     end
   end
 end
