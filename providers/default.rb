@@ -68,22 +68,11 @@ action :npm_install do
 end
 
 action :bower_install do
-  run_context.include_recipe 'ruby'
-
-  # provide Rakefile if it doesn't exist, e.g. during testing
-  cookbook_file "Rakefile" do
-    path "/var/www/#{new_resource.name}/current/Rakefile"
-    owner new_resource.user
-    group new_resource.group
-    cookbook "capistrano"
-    action :create_if_missing
-  end
-
-  execute "bundle exec rake bower:install:deployment" do
+  execute "bower install" do
+    command "/home/#{new_resource.user}/npm-global/bin/bower install"
     user new_resource.user
-    environment ({ 'RAILS_ENV' => new_resource.rails_env,
-                   'npm_global_prefix' => "/home/#{new_resource.user}/npm-global" })
-    cwd "/var/www/#{new_resource.name}/current"
+    action :run
+    environment ({ 'npm_global_prefix' => "/home/#{new_resource.user}/npm-global" })
   end
 end
 
