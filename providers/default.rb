@@ -13,13 +13,18 @@ end
 
 action :config do
   # create shared folders
-  %W{ #{new_resource.name} #{new_resource.name}/current #{new_resource.name}/current/vendor #{new_resource.name}/shared }.each do |dir|
+  %W{ #{new_resource.name} #{new_resource.name}/shared #{new_resource.name}/shared/vendor }.each do |dir|
     directory "/var/www/#{dir}" do
       owner new_resource.user
       group new_resource.group
       mode '0755'
       recursive true
     end
+  end
+
+  # symlink current folder
+  link "#{new_resource.name}/current" do
+    to "#{new_resource.name}/shared"
   end
 end
 
