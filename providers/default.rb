@@ -23,8 +23,8 @@ action :config do
   end
 
   # symlink current folder
-  link "#{new_resource.name}/current" do
-    to "#{new_resource.name}/shared"
+  link "/var/www/#{new_resource.name}/current" do
+    to "/var/www/#{new_resource.name}/shared"
   end
 end
 
