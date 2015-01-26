@@ -53,6 +53,14 @@ action :bundle_install do
 end
 
 action :npm_install do
+  # create directory for npm packages
+  directory "/var/www/#{new_resource.name}/shared/node_modules" do
+    owner new_resource.user
+    group new_resource.group
+    mode '0755'
+    action :create
+  end
+
   # install npm packages
   node['npm_packages'].each do |pkg|
     execute "npm install #{pkg}" do
