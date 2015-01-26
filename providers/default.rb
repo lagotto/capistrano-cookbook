@@ -62,6 +62,7 @@ action :npm_install do
   end
 
   # install npm packages
+  # we need to set $HOME because of a Chef bug: https://tickets.opscode.com/browse/CHEF-2517
   node['npm_packages'].each do |pkg|
     execute "npm install #{pkg}" do
       user new_resource.user
