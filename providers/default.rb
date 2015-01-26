@@ -67,7 +67,7 @@ action :npm_install do
       user new_resource.user
       cwd "/var/www/#{new_resource.name}/shared"
       creates "/var/www/#{new_resource.name}/shared/node_modules/#{pkg}/"
-      environment ({ 'HOME' => ::Dir.home('USERNAME'), 'USER' => 'USERNAME' })
+      environment ({ 'HOME' => ::Dir.home(new_resource.user), 'USER' => new_resource.user })
       action :run
     end
   end
@@ -87,7 +87,7 @@ action :bower_install do
 
   execute "bundle exec rake bower:install" do
     user new_resource.user
-    environment ({ 'HOME' => ::Dir.home('USERNAME'), 'USER' => 'USERNAME', 'RAILS_ENV' => new_resource.rails_env })
+    environment ({ 'HOME' => ::Dir.home(new_resource.user), 'USER' => new_resource.user, 'RAILS_ENV' => new_resource.rails_env })
     cwd "/var/www/#{new_resource.name}/shared"
   end
 end
