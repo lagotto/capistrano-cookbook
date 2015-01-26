@@ -55,7 +55,7 @@ end
 action :npm_install do
   # install npm packages
   node['npm_packages'].each do |pkg|
-    execute "npm install -g #{pkg}" do
+    execute "npm install #{pkg}" do
       user new_resource.user
       creates "/home/#{new_resource.user}/node_modules/#{pkg}/"
       action :run
