@@ -57,6 +57,7 @@ action :npm_install do
   node['npm_packages'].each do |pkg|
     execute "npm install #{pkg}" do
       user new_resource.user
+      group new_resource.group
       creates "/home/#{new_resource.user}/node_modules/#{pkg}/"
       action :run
     end
@@ -65,9 +66,10 @@ end
 
 action :bower_install do
   execute "bower install" do
-    command "/home/#{new_resource.user}/node_modules/bower/bin/bower install"
     user new_resource.user
+    group new_resource.group
     cwd "/var/www/#{new_resource.name}/current"
+    environment "PATH" => "/home/#{new_resource.user}/node_modules/bower/bin/"
     action :run
   end
 end
