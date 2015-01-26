@@ -54,7 +54,7 @@ end
 
 action :npm_install do
   # create directory for global installs
-  directory "/home/#{new_resource.user}/npm-global" do
+  directory "/var/www/#{new_resource.name}/shared/vendor/npm-global" do
     owner new_resource.user
     group new_resource.group
     mode '0755'
@@ -65,19 +65,19 @@ action :npm_install do
   node['npm_packages'].each do |pkg|
     execute "npm install -g #{pkg}" do
       user new_resource.user
-      creates "/home/#{new_resource.user}/npm-global/lib/node_modules/#{pkg}/"
+      creates "/var/www/#{new_resource.name}/shared/vendor/npm-global/lib/node_modules/#{pkg}/"
       action :run
-      environment ({ 'npm_global_prefix' => "/home/#{new_resource.user}/npm-global" })
+      environment ({ 'npm_global_prefix' => "/var/www/#{new_resource.name}/shared/vendor/npm-global" })
     end
   end
 end
 
 action :bower_install do
   execute "bower install" do
-    command "/home/#{new_resource.user}/npm-global/bin/bower install"
+    command "/var/www/#{new_resource.name}/shared/vendor/npm-global/bin/bower install"
     user new_resource.user
     action :run
-    environment ({ 'npm_global_prefix' => "/home/#{new_resource.user}/npm-global" })
+    environment ({ 'npm_global_prefix' => "/var/www/#{new_resource.name}/shared/vendor/npm-global" })
   end
 end
 
