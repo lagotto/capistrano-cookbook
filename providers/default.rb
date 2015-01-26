@@ -58,19 +58,28 @@ action :npm_install do
     execute "npm install #{pkg}" do
       user new_resource.user
       group new_resource.group
-      creates "/home/#{new_resource.user}/node_modules/#{pkg}/"
+      creates "/var/www/#{new_resource.name}/shared/node_modules/#{pkg}/"
       action :run
     end
   end
 end
 
 action :bower_install do
-  execute "bower install" do
-    user new_resource.user
+  run_context.include_recipe 'ruby'
+
+  # provide Rakefile if it doesn't exist, e.g. during testing
+  cookbook_file "Rakefile" do
+    path "/var/www/#{new_resource.name}/current/Rakefile"
+    owner new_resource.user
     group new_resource.group
-    cwd "/var/www/#{new_resource.name}/current"
-    environment "PATH" => "/home/#{new_resource.user}/node_modules/bower/bin/"
-    action :run
+    cookbook "capistrano"
+    action :create_if_missing
+  end
+
+  execute "rake bower:install:deployment" do
+    user new_resource.user
+    environment 'RAILS_ENV' => new_resource.rails_env
+    cwd "/var/www/#{new_resource.name}/shared"
   end
 end
 
