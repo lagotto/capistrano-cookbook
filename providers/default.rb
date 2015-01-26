@@ -64,11 +64,10 @@ action :npm_install do
   # install npm packages
   node['npm_packages'].each do |pkg|
     execute "npm install #{pkg}" do
-      command "su #{new_resource.user} -l -c 'bash -i npm install #{pkg}'"
       user new_resource.user
-      group new_resource.group
       cwd "/var/www/#{new_resource.name}/shared"
       creates "/var/www/#{new_resource.name}/shared/node_modules/#{pkg}/"
+      environment ({ 'HOME' => ::Dir.home('USERNAME'), 'USER' => 'USERNAME' })
       action :run
     end
   end
@@ -87,9 +86,8 @@ action :bower_install do
   end
 
   execute "bundle exec rake bower:install" do
-    command "su #{new_resource.user} -l -c 'bundle exec rake bower:install'"
     user new_resource.user
-    environment 'RAILS_ENV' => new_resource.rails_env
+    environment ({ 'HOME' => ::Dir.home('USERNAME'), 'USER' => 'USERNAME', 'RAILS_ENV' => new_resource.rails_env })
     cwd "/var/www/#{new_resource.name}/shared"
   end
 end
