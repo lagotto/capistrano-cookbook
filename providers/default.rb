@@ -85,7 +85,7 @@ action :bower_install do
     action :create_if_missing
   end
 
-  execute "rake bower:install:deployment" do
+  execute "bundle exec rake bower:install:deployment" do
     user new_resource.user
     environment 'RAILS_ENV' => new_resource.rails_env
     cwd "/var/www/#{new_resource.name}/shared"
