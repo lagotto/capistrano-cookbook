@@ -43,7 +43,7 @@ action :bundle_install do
   # make sure we can use the bundle command
   execute "bundle install" do
     user new_resource.user
-    cwd "/var/www/#{new_resource.name}/current"
+    cwd "/var/www/#{new_resource.name}/shared"
     if new_resource.rails_env == "development"
       command "bundle config --delete without --no-deployment && bundle install --path vendor/bundle"
     else
@@ -58,6 +58,7 @@ action :npm_install do
     execute "npm install #{pkg}" do
       user new_resource.user
       group new_resource.group
+      cwd "/var/www/#{new_resource.name}/shared"
       creates "/var/www/#{new_resource.name}/shared/node_modules/#{pkg}/"
       action :run
     end
