@@ -13,7 +13,7 @@ end
 
 action :config do
   # create shared folders
-  %W{ #{new_resource.name} #{new_resource.name}/shared #{new_resource.name}/shared/vendor #{new_resource.name}/shared/tmp #{new_resource.name}/shared/tmp/pids }.each do |dir|
+  %W{ #{new_resource.name} #{new_resource.name}/shared #{new_resource.name}/shared/frontend #{new_resource.name}/shared/vendor #{new_resource.name}/shared/tmp #{new_resource.name}/shared/tmp/pids }.each do |dir|
     directory "/var/www/#{dir}" do
       owner new_resource.user
       group new_resource.group
@@ -54,7 +54,7 @@ end
 
 action :npm_install do
   # create directory for npm packages
-  directory "/var/www/#{new_resource.name}/shared/node_modules" do
+  directory "/var/www/#{new_resource.name}/shared/frontend/node_modules" do
     owner new_resource.user
     group new_resource.group
     mode '0755'
@@ -66,8 +66,8 @@ action :npm_install do
   Array(node['npm_packages']).each do |pkg|
     execute "npm install #{pkg}" do
       user new_resource.user
-      cwd "/var/www/#{new_resource.name}/shared"
-      creates "/var/www/#{new_resource.name}/shared/node_modules/#{pkg}/"
+      cwd "/var/www/#{new_resource.name}/shared/frontend"
+      creates "/var/www/#{new_resource.name}/shared/frontend/node_modules/#{pkg}/"
       environment ({ 'HOME' => ::Dir.home(new_resource.user), 'USER' => new_resource.user })
       action :run
     end
