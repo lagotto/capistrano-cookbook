@@ -109,7 +109,7 @@ action :precompile_assets do
     user new_resource.user
     environment 'RAILS_ENV' => new_resource.rails_env
     cwd "/var/www/#{new_resource.name}/current"
-    not_if { new_resource.rails_env == "development" }
+    # not_if { new_resource.rails_env == "development" }
   end
 end
 
