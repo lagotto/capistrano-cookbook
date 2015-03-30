@@ -61,16 +61,13 @@ action :npm_install do
     action :create
   end
 
-  # install npm packages
+  # install npm packages, using information in package.json
   # we need to set $HOME because of a Chef bug: https://tickets.opscode.com/browse/CHEF-2517
-  Array(node['npm_packages']).each do |pkg|
-    execute "npm install #{pkg}" do
-      user new_resource.user
-      cwd "/var/www/#{new_resource.name}/shared/frontend"
-      creates "/var/www/#{new_resource.name}/shared/frontend/node_modules/#{pkg}/"
-      environment ({ 'HOME' => ::Dir.home(new_resource.user), 'USER' => new_resource.user })
-      action :run
-    end
+  execute "npm install" do
+    user new_resource.user
+    cwd "/var/www/#{new_resource.name}/shared/frontend"
+    environment ({ 'HOME' => ::Dir.home(new_resource.user), 'USER' => new_resource.user })
+    action :run
   end
 end
 
