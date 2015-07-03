@@ -90,6 +90,26 @@ action :bower_install do
   end
 end
 
+action :consul_install do
+  # install mysql
+  run_context.include_recipe 'consul'
+
+  # monitor httpd service
+  consul_service_watch_def 'nginx' do
+    passingonly true
+    handler "chef-client"
+  end
+
+  consul_service_def 'nginx' do
+    port 80
+    tags ['http']
+    check(
+      interval: '10s',
+      http: "#{ENV['HOSTNAME']}:80"
+    )
+  end
+end
+
 action :precompile_assets do
   run_context.include_recipe 'ruby'
 
