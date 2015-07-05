@@ -53,7 +53,7 @@ action :bundle_install do
 end
 
 action :npm_install do
-  run_context.include_recipe 'nodejs::install_from_package'
+  run_context.include_recipe 'nodejs'
 
   # create directory for npm packages
   directory "/var/www/#{new_resource.name}/shared/frontend/node_modules" do
@@ -74,7 +74,7 @@ action :npm_install do
 end
 
 action :bower_install do
-  run_context.include_recipe 'nodejs::install_from_package'
+  run_context.include_recipe 'nodejs'
   run_context.include_recipe 'ruby'
 
   # provide Rakefile if it doesn't exist, e.g. during testing
@@ -114,7 +114,7 @@ action :consul_install do
 end
 
 action :precompile_assets do
-  run_context.include_recipe 'nodejs::install_from_package'
+  run_context.include_recipe 'nodejs'
   run_context.include_recipe 'ruby'
 
   # provide Rakefile if it doesn't exist, e.g. during testing
@@ -135,7 +135,7 @@ action :precompile_assets do
 end
 
 action :ember_build do
-  run_context.include_recipe 'nodejs::install_from_package'
+  run_context.include_recipe 'nodejs'
   run_context.include_recipe 'ruby'
 
   # provide Rakefile if it doesn't exist, e.g. during testing
