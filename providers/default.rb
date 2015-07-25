@@ -111,6 +111,8 @@ action :consul_install do
       http: "#{ENV['HOSTNAME']}:80"
     )
   end
+
+  not_if { new_resource.atlas_key.nil? }
 end
 
 action :precompile_assets do
