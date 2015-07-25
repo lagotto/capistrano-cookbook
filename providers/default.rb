@@ -112,7 +112,7 @@ action :consul_install do
     )
   end
 
-  not_if { new_resource.atlas_key.nil? }
+  not_if { node['consul']['atlas_token'] == nil }
 end
 
 action :precompile_assets do
