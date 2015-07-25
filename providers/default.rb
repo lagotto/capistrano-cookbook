@@ -108,7 +108,7 @@ action :consul_install do
     tags ['http']
     check(
       interval: '10s',
-      http: "#{ENV['HOSTNAME']}:80"
+      http: "http://#{ENV['HOSTNAME']}:80"
     )
   end
 end
