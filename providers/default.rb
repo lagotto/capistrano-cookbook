@@ -95,12 +95,13 @@ end
 
 action :consul_install do
   # install consul
-  run_context.include_recipe 'consul'
+  run_context.include_recipe 'consul' unless node['consul']['atlas_token'].nil?
 
   # monitor httpd service
   consul_service_watch_def 'nginx' do
     passingonly true
     handler "chef-client"
+    not_if { node['consul']['atlas_token'] == nil }
   end
 
   consul_service_def 'nginx' do
@@ -110,9 +111,8 @@ action :consul_install do
       interval: '10s',
       http: "#{ENV['HOSTNAME']}:80"
     )
+    not_if { node['consul']['atlas_token'] == nil }
   end
-
-  not_if { node['consul']['atlas_token'] == nil }
 end
 
 action :precompile_assets do
