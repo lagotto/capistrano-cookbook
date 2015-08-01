@@ -113,6 +113,11 @@ action :consul_install do
   end
 end
 
+action :remote_syslog_install do
+  # install remote_syslog
+  run_context.include_recipe 'remote_syslog2'
+end
+
 action :precompile_assets do
   run_context.include_recipe 'nodejs'
   run_context.include_recipe 'ruby'
