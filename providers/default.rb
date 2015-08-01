@@ -115,7 +115,7 @@ end
 
 action :remote_syslog_install do
   # install remote_syslog
-  run_context.include_recipe 'remote_syslog2'
+  run_context.include_recipe 'remote_syslog2' if ENV['PAPERTRAIL_HOST']
 end
 
 action :precompile_assets do
