@@ -31,15 +31,6 @@ end
 action :bundle_install do
   run_context.include_recipe 'ruby'
 
-  # provide Gemfile if it doesn't exist, e.g. during testing
-  cookbook_file "Gemfile" do
-    path "/var/www/#{new_resource.name}/current/Gemfile"
-    owner new_resource.user
-    group new_resource.group
-    cookbook "capistrano"
-    action :create_if_missing
-  end
-
   # make sure we can use the bundle command
   execute "bundle install" do
     user new_resource.user
@@ -49,6 +40,7 @@ action :bundle_install do
     else
       command "bundle install --path vendor/bundle --deployment --without development test"
     end
+    only_if ::File.exist?("/var/www/#{new_resource.name}/current/Gemfile")
   end
 end
 
