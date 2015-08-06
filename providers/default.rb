@@ -31,16 +31,17 @@ end
 action :bundle_install do
   run_context.include_recipe 'ruby'
 
-  # make sure we can use the bundle command
-  execute "bundle install" do
-    user new_resource.user
-    cwd "/var/www/#{new_resource.name}/shared"
-    if new_resource.rails_env == "development"
-      command "bundle config --delete without --no-deployment && bundle install --path vendor/bundle"
-    else
-      command "bundle install --path vendor/bundle --deployment --without development test"
+  if ::File.exist?("/var/www/#{new_resource.name}/current/Gemfile")
+    # make sure we can use the bundle command
+    execute "bundle install" do
+      user new_resource.user
+      cwd "/var/www/#{new_resource.name}/shared"
+      if new_resource.rails_env == "development"
+        command "bundle config --delete without --no-deployment && bundle install --path vendor/bundle"
+      else
+        command "bundle install --path vendor/bundle --deployment --without development test"
+      end
     end
-    only_if ::File.exist?("/var/www/#{new_resource.name}/current/Gemfile")
   end
 end
 
