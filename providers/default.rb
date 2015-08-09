@@ -90,25 +90,19 @@ action :consul_install do
   # install consul
   run_context.include_recipe 'consul'
 
-  # monitor httpd service
-  consul_service_watch_def 'nginx' do
-    passingonly true
-    handler "chef-client"
-  end
-
-  consul_service_def 'nginx' do
-    port 80
-    tags ['http']
-    check(
-      interval: '10s',
-      http: "http://#{node['fqdn']}:80"
-    )
+  # monitor nginx service
+  if node['recipes'].include?('passenger_nginx')
+    consul_definition 'nginx' do
+      type 'check'
+      parameters(http: "http://#{node['fqdn']}:80", interval: '10s', timeout: '2s')
+      notifies :reload, 'consul_service[consul]', :delayed
+    end
   end
 end
 
 action :remote_syslog_install do
   # install remote_syslog
-  run_context.include_recipe 'remote_syslog2' if ENV['PAPERTRAIL_HOST']
+  run_context.include_recipe 'remote_syslog2' if node['remote_syslog2']['config']['destination']['host']
 end
 
 action :precompile_assets do
