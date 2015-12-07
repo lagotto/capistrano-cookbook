@@ -4,7 +4,7 @@ maintainer_email  "martin.fenner@datacite.org"
 license           "Apache 2.0"
 description       "Capistramo configuration"
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version           "0.10.16"
+version           "0.10.17"
 
 # opscode cookbooks
 depends           "apt"
