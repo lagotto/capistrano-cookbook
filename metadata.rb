@@ -1,10 +1,10 @@
 name              "capistrano"
 maintainer        "Martin Fenner"
-maintainer_email  "martin.fenner@datacite.org"
+maintainer_email  "mfenner@datacite.org"
 license           "Apache 2.0"
 description       "Capistramo configuration"
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version           "0.10.17"
+version           "1.0.0"
 
 # opscode cookbooks
 depends           "apt"
