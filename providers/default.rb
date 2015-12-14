@@ -119,7 +119,7 @@ action :rsyslog_config do
   else
     node.override['rsyslog']['server'] = true
 
-    run_context.include_recipe 'rsyslog::default'
+    run_context.include_recipe 'rsyslog::server'
   end
 end
 
