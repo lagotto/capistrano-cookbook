@@ -11,5 +11,5 @@ default['consul']['service_mode'] = 'cluster'
 default['consul']['atlas_cluster'] = ENV['CONSUL_SERVERS'] || node['hostname']
 default['consul']['atlas_token'] = ENV['ATLAS_TOKEN']
 
-default['rsyslog']['server'] = '127.0.0.1'
+default['rsyslog']['server_ip'] = '127.0.0.1'
 default['rsyslog']['port'] = 514
