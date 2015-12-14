@@ -109,7 +109,7 @@ end
 
 action :rsyslog_config do
   # configure rsyslog client
-  run_context.include_recipe 'rsyslog:client'
+  run_context.include_recipe 'rsyslog::client'
 end
 
 action :precompile_assets do
