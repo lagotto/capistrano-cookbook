@@ -13,5 +13,3 @@ default['consul']['atlas_token'] = ENV['ATLAS_TOKEN']
 
 default['rsyslog']['server'] = '127.0.0.1'
 default['rsyslog']['port'] = 514
-node['rsyslog']['custom_remote'] = [{ 'server' => node['rsyslog']['server'],
-                                      'port' => node['rsyslog']['port'] }]
