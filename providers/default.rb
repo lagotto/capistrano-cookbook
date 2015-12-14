@@ -108,8 +108,12 @@ action :consul_install do
 end
 
 action :rsyslog_config do
-  # configure rsyslog client
-  run_context.include_recipe 'rsyslog::client'
+  # configure rsyslog
+  if node['rsyslog']['server']
+    run_context.include_recipe 'rsyslog::default'
+  else
+    run_context.include_recipe 'rsyslog::client'
+  end
 end
 
 action :precompile_assets do
