@@ -11,12 +11,7 @@ default['consul']['service_mode'] = 'cluster'
 default['consul']['atlas_cluster'] = ENV['CONSUL_SERVERS'] || node['hostname']
 default['consul']['atlas_token'] = ENV['ATLAS_TOKEN']
 
-default['remote_syslog2']['config']['files'] = %W(
-  /var/log/nginx/error_log
-  /var/log/mongo/mongod.log
-  /var/www/#{node['application']}/shared/log/app.log
-)
-default['remote_syslog2']['config']['destination']['host'] = ENV['PAPERTRAIL_HOST']
-default['remote_syslog2']['config']['destination']['port'] = ENV['PAPERTRAIL_PORT']
-#default['remote_syslog2']['version'] = "v0.13"
-#default['remote_syslog2']['install']['download_file'] = "https://github.com/papertrail/remote_syslog2/releases/download/#{node['remote_syslog2']['version']}/remote_syslog_linux_amd64.tar.gz"
+default['rsyslog']['server'] = '127.0.0.1'
+default['rsyslog']['port'] = 514
+node['rsyslog']['custom_remote'] = [{ 'server' => node['rsyslog']['server'],
+                                      'port' => node['rsyslog']['port'] }]

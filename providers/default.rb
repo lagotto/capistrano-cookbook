@@ -107,9 +107,9 @@ action :consul_install do
   run_context.include_recipe 'consul'
 end
 
-action :remote_syslog2_install do
-  # install remote_syslog2
-  run_context.include_recipe 'remote_syslog2'
+action :rsyslog_config do
+  # configure rsyslog client
+  run_context.include_recipe 'rsyslog:client'
 end
 
 action :precompile_assets do
