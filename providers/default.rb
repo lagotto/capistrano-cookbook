@@ -230,7 +230,6 @@ action :swagger do
       user new_resource.user
       environment 'RAILS_ENV' => new_resource.rails_env
       cwd dir
-      not_if { new_resource.rails_env == "development" }
     end
   end
 end
