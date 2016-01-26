@@ -108,7 +108,7 @@ action :consul_install do
 end
 
 action :rsyslog_config do
-  # configure rsyslog
+  # configure rsyslog, not on development server
   if ENV['RSYSLOG_HOST']
     node.override['rsyslog']['server'] = false
     node.override['rsyslog']['server_ip'] = ENV['RSYSLOG_HOST']
@@ -116,13 +116,11 @@ action :rsyslog_config do
     node.override['rsyslog']['protocol'] = 'udp'
 
     run_context.include_recipe 'rsyslog::client'
-  else
+  elsif new_resource.rails_env != "development"
     node.override['rsyslog']['server'] = true
 
     run_context.include_recipe 'rsyslog::server'
   end
-
-  not_if { new_resource.rails_env == "development" }
 end
 
 action :precompile_assets do
