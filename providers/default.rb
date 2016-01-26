@@ -121,6 +121,8 @@ action :rsyslog_config do
 
     run_context.include_recipe 'rsyslog::server'
   end
+
+  not_if { new_resource.rails_env == "development" }
 end
 
 action :precompile_assets do
